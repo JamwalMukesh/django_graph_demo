@@ -1,0 +1,30 @@
+<!-- myapp/templates/graphiql.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>GraphiQL</title>
+  <link rel="stylesheet" href="{% static 'graphene_django/graphiql.css' %}">
+  <script src="{% static 'graphene_django/graphiql.js' %}"></script>
+</head>
+<body>
+  <div id="graphiql" style="height: 100vh;"></div>
+
+  <script>
+    function fetcher(params) {
+      return fetch('/myapp/graphql/', {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(params),
+      }).then(response => response.json());
+    }
+
+    ReactDOM.render(
+      React.createElement(GraphiQL, { fetcher: fetcher }),
+      document.getElementById('graphiql'),
+    );
+  </script>
+</body>
+</html>
